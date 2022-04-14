@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS Coordonnees;
 DROP TABLE IF EXISTS Operation;
 DROP TABLE IF EXISTS Decouverte;
 DROP TABLE IF EXISTS Appartenir;
--- * Fait
+-- FAIT: Créer un script
 CREATE TABLE IF NOT EXISTS Responsable(
   idResponsable INT AUTO_INCREMENT,
   nomResponsable VARCHAR(50),
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS Coordonnees(
   geoPoint2DCoordonnees TEXT,
   PRIMARY KEY(idCoordonnees)
 ) AUTO_INCREMENT = 0;
--- TODO: Créer un script 
+-- FAIT: Créer un script 
 CREATE TABLE IF NOT EXISTS Operation(
   idOperation INT AUTO_INCREMENT,
   dateOperation DECIMAL(4, 0),
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS Operation(
   PRIMARY KEY(idOperation),
   FOREIGN KEY(idResponsable_organise) REFERENCES Responsable(idResponsable)
 ) AUTO_INCREMENT = 0;
--- TODO: créer un script
+-- FAIT: créer un script
 CREATE TABLE IF NOT EXISTS Decouverte(
   idDecouverte SMALLINT,
   syntheseDecouverte VARCHAR(8000),
