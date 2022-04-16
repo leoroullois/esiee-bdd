@@ -1,9 +1,9 @@
 import responsable from "./responsable";
 import operation from "./operation";
 import decouverte from "./decouverte";
-import epoque from "./epoque";
+import appartenir from "./appartenir";
 // responsable();
 // operation();
 // decouverte();
-epoque();
+appartenir();
 

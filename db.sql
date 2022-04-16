@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS Responsable(
   prenomResponsable VARCHAR(50),
   PRIMARY KEY(idResponsable)
 ) AUTO_INCREMENT = 0;
--- TODO: créer le csv des époques
+-- FAIT
 CREATE TABLE IF NOT EXISTS Epoque(
   idEpoque INT AUTO_INCREMENT,
   libelleEpoque VARCHAR(50) NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS Decouverte(
   FOREIGN KEY(idOperation_decouvre) REFERENCES Operation(idOperation),
   FOREIGN KEY(idAdresse_situe) REFERENCES Adresse(idAdresse)
 );
--- TODO: 
+-- FAIT: créer un script 
 CREATE TABLE IF NOT EXISTS Appartenir(
   idEpoque_appartient INT,
   idDecouverte_a_appartenu SMALLINT,
@@ -67,3 +67,10 @@ CREATE TABLE IF NOT EXISTS Appartenir(
   FOREIGN KEY(idEpoque_appartient) REFERENCES Epoque(idEpoque),
   FOREIGN KEY(idDecouverte_a_appartenu) REFERENCES Decouverte(idDecouverte)
 );
+INSERT INTO Epoque(idEpoque, libelleEpoque)
+VALUES (0, "Préhistoire"),
+  (1, "Protohistoire"),
+  (2, "Antiquité"),
+  (3, "Moyen-Age"),
+  (4, "Temps modernes"),
+  (5, "Epoque contemporaine");

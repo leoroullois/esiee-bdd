@@ -1,10 +1,31 @@
 import fs from "fs";
 import { join } from "path";
 
-interface IEpoque {
-   libelleEpoque: string;
+interface IAppartenir {
+   idEpoque_appartient: number;
+   idDecouverte_a_appartenu: number;
 }
-const parseFile = (): any => {
+
+const mapEpoque = (epoque: string): number => {
+   switch (epoque) {
+      case "Préhistoire":
+         return 0;
+      case "Protohistoire":
+         return 1;
+      case "Antiquité":
+         return 2;
+      case "Moyen-Age":
+         return 3;
+      case "Temps modernes":
+         return 4;
+      case "Epoque contemporaine":
+         return 5;
+      default:
+         return -1;
+   }
+};
+
+const parseFile = (): IAppartenir[] => {
    const file = join(__dirname, "../assets/csv", "Epoque.csv");
    const data = fs.readFileSync(file, "utf8").split("\n");
    data.shift();
@@ -50,14 +71,26 @@ const parseFile = (): any => {
       }
       return output;
    });
+   const appartenir: IAppartenir[] = [];
+   epoque.forEach((elt, i) => {
+      console.log(elt);
+      if (elt.length > 0) {
+         elt.forEach((elt) => {
+            appartenir.push({
+               idEpoque_appartient: mapEpoque(elt),
+               idDecouverte_a_appartenu: i,
+            });
+         });
+      }
+   });
    console.log(epoque);
 
-   return epoque;
+   return appartenir;
 };
 
 const writeFile = (): void => {
    fs.writeFile(
-      join(__dirname, "../assets/json/epoque.json"),
+      join(__dirname, "../assets/json/appartenir.json"),
       JSON.stringify(parseFile()),
       (err) => {
          if (err) {
