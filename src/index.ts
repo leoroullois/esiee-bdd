@@ -5,5 +5,5 @@ import appartenir from "./appartenir";
 // responsable();
 // operation();
 // decouverte();
-appartenir();
+// appartenir();
 

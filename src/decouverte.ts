@@ -22,10 +22,6 @@ const parseFile = (): IDecouverte[] => {
       };
       if (line) {
          const currLine = line.split(";", 2);
-         if (i === 0) {
-            console.log(currLine);
-            console.log(line);
-         }
          if (currLine.length === 1) {
             const elt = currLine[0].replace("\r", "");
             if (Number.isNaN(Number(elt))) {
@@ -42,9 +38,9 @@ const parseFile = (): IDecouverte[] => {
             output.idDecouverte = id;
             output.syntheseDecouverte = synthese;
          }
-         output.idAdresse_situe = i;
-         output.idCoordonnees_localise = i;
-         output.idOperation_decouvre = i;
+         output.idAdresse_situe = i + 1;
+         output.idCoordonnees_localise = i + 1;
+         output.idOperation_decouvre = i + 1;
       }
       return output;
    });
