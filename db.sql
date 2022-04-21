@@ -66,3 +66,101 @@ VALUES ("Préhistoire"),
   ("Moyen-Age"),
   ("Temps modernes"),
   ("Epoque contemporaine");
+USE `IGI-3014-TD10s-GP4`;
+SELECT *
+FROM Decouverte
+  INNER JOIN Appartenir ON Decouverte.idDecouverte = Appartenir.idDecouverte_a_appartenu
+WHERE idEpoque_appartient = 4
+ORDER BY (
+    SELECT Operation.dateOperation
+    FROM Operation
+    WHERE Operation.idOperation = Decouverte.idOperation_decouvre
+  ) ASC;
+-- * OK
+-- Sélectionne les découverte de l'époque "Moyen-Age" par ordre chronologique croissant
+USE `IGI-3014-TD10s-GP4`;
+SELECT dateOperation,
+  natureOperation,
+  syntheseDecouverte
+FROM Decouverte
+  INNER JOIN Appartenir ON Decouverte.idDecouverte = Appartenir.idDecouverte_a_appartenu
+  INNER JOIN Operation ON Decouverte.idOperation_decouvre = Operation.idOperation
+WHERE idEpoque_appartient = 4
+ORDER BY dateOperation ASC;
+-- * OK
+-- Compte le nombre de découvertes par époque
+USE `IGI-3014-TD10s-GP4`;
+SELECT libelleEpoque,
+  COUNT(idEpoque) AS nbDecouverte
+FROM Epoque
+  INNER JOIN Appartenir ON Epoque.idEpoque = Appartenir.idEpoque_appartient
+GROUP BY idEpoque;
+-- * OK
+-- Sélectionner la première découverte de chaque époque
+USE `IGI-3014-TD10s-GP4`;
+SELECT libelleEpoque,
+  dateOperation,
+  natureOperation,
+  syntheseDecouverte
+FROM Decouverte
+  INNER JOIN Operation ON Decouverte.idOperation_decouvre = Operation.idOperation
+  INNER JOIN Appartenir ON Decouverte.idDecouverte = Appartenir.idDecouverte_a_appartenu
+  INNER JOIN Epoque ON Appartenir.idEpoque_appartient = Epoque.idEpoque
+GROUP BY idEpoque_appartient
+ORDER BY dateOperation ASC;
+-- Sélectionner la première découverte archéologique recensée à Paris
+USE `IGI-3014-TD10s-GP4`;
+SELECT *
+FROM Decouverte
+  JOIN Adresse ON Decouverte.idAdresse_situe = Adresse.idAdresse
+  JOIN Operation ON Decouverte.idOperation_decouvre = Operation.idOperation
+WHERE communeAdresse = "Paris"
+ORDER BY dateOperation ASC
+LIMIT 1;
+-- Sélectionner toutes les découvertes qui traversent l’époque du Moyen-Age et la Renaissance
+USE `IGI-3014-TD10s-GP4`;
+SELECT *
+FROM Decouverte
+  INNER JOIN Appartenir ON Decouverte.idDecouverte = Appartenir.idDecouverte_a_appartenu;
+-- Nombre d'époques pour chaque découverte
+USE `IGI-3014-TD10s-GP4`;
+SELECT idDecouverte,
+  syntheseDecouverte,
+  COUNT(idEpoque_appartient) as nbDecouvertes
+FROM Decouverte
+  INNER JOIN Appartenir ON Decouverte.idDecouverte = Appartenir.idDecouverte_a_appartenu
+GROUP BY idEpoque_appartient;
+-- Toutes les découvertes dont le responsable est Théodore Vacquer
+USE `IGI-3014-TD10s-GP4`;
+SELECT CONCAT(prenomResponsable, " ", nomResponsable) AS responsable,
+  syntheseDecouverte,
+  dateOperation,
+  natureOperation,
+  adresseAdresse,
+  communeAdresse
+FROM Decouverte
+  INNER JOIN Operation ON Decouverte.idOperation_decouvre = Operation.idOperation
+  INNER JOIN Responsable ON Operation.idResponsable_organise = Responsable.idResponsable
+  INNER JOIN Adresse ON Decouverte.idAdresse_situe = Adresse.idAdresse
+WHERE nomResponsable = "Vacquer"
+  AND prenomResponsable = "Théodore";
+-- Nombre moyen d'opérations par responsable
+USE `IGI-3014-TD10s-GP4`;
+SELECT CONCAT(prenomResponsable, " ", nomResponsable) AS responsable,
+  COUNT(idOperation) AS nbOperations
+FROM Responsable
+  INNER JOIN Operation ON Responsable.idResponsable = Operation.idResponsable_organise
+GROUP BY prenomResponsable;
+-- Année moyenne, min, max de découverte pour chaque époque
+USE `IGI-3014-TD10s-GP4`;
+SELECT libelleEpoque,
+  AVG(dateOperation) AS anneeMoyenne,
+  MIN(dateOperation) AS anneeMin,
+  MAX(dateOperation) AS anneeMax,
+  COUNT(idOperation) AS nbOperations
+FROM Decouverte
+  INNER JOIN Appartenir ON Decouverte.idDecouverte = Appartenir.idDecouverte_a_appartenu
+  INNER JOIN Operation ON Decouverte.idOperation_decouvre = Operation.idOperation
+  INNER JOIN Epoque ON Appartenir.idEpoque_appartient = Epoque.idEpoque
+WHERE dateOperation != 9999
+GROUP BY idEpoque_appartient;
